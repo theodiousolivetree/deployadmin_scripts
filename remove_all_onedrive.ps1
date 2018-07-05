@@ -1,4 +1,6 @@
-# Note: Some inspiration was taken from here: https://gist.github.com/ThaddeusAid/55a137fb48fc01594eca4e89a025b456
+# Note: Some inspiration was taken from here: https://gist.github.com/ThaddeusAid/55a137fb48fc01594eca4e89a025b456 
+# The computer needs being in a workgroup (no domain AD)
+# Set Set-ExecuionPolicy unrestricted
 # Remove ALL OneDrive
 # By The Odious Olivetree
 # July 4 2018 
