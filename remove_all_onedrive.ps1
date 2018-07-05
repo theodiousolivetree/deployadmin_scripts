@@ -5,7 +5,7 @@
 # By The Odious Olivetree
 # July 4 2018 
 # Terminate any OneDrive processes
-CMD /C "C:\Windows\System32\taskkill.exe /f /im OneDrive.exe"
+    CMD /C "C:\Windows\System32\taskkill.exe /f /im OneDrive.exe"
 # Uninstall
     CMD /C "c:\Windows\SysWOW64\OneDriveSetup.exe /uninstall"
 # take ownership of the re-installer
