@@ -7,7 +7,7 @@
     CMD /C "c:\Windows\SysWOW64\OneDriveSetup.exe /uninstall"
 # take ownership of the re-installer
     CMD /C "takeown.exe /F C:\windows\SysWOW64\OneDriveSetup.exe /A"
-    CMD /C "icacls C:\windows\syswow64\OneDriveSetup.exe /grant Administrators:F"
+    CMD /C "icacls C:\windows\syswow64\OneDriveSetup.exe /grant Administrateurs:F"
 # Remove
     Remove-Item C:\Windows\SysWOW64\OneDriveSetup.exe -Force
 # Create (a fake .exe, 0 bytes in size)
