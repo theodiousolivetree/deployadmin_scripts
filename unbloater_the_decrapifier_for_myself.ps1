@@ -1,10 +1,11 @@
-# Note: Some inspiration was taken from here: https://gist.github.com/ThaddeusAid/55a137fb48fc01594eca4e89a025b456
+# Note: Some inspiration was taken from here: https://community.spiceworks.com/scripts/show/3977-windows-10-decrapifier-version-2 
+# The computer needs being in a workgroup (no domain AD)
+# Set Set-ExecuionPolicy unrestricted
 # UnBloater the DeCrapfier
 # By The Odious Olivetree
 # July 4 2018 
 # 
 # Uninstall
-# Note: Some inspiration was taken from here: https://gist.github.com/ThaddeusAid/55a137fb48fc01594eca4e89a025b456
 
 # Activate Remote Desktop
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
