@@ -19,13 +19,21 @@
 # Deny system write
     CMD /C "icacls C:\Windows\SysWOW64\OneDriveSetup.exe /deny Everyone:W"
 
-
-write-Host "***Disabling OneDrive...***"
+# Disable OneDrive
+# write-Host "***Disabling OneDrive...***"
 reg add "HKLM\Software\Policies\Microsoft\Windows\OneDrive" /f /t REG_DWORD /v DisableFileSyncNGSC /d 1
 reg add "HKLM\Software\Policies\Microsoft\Windows\OneDrive" /f /t REG_DWORD /v DisableFileSync /d 1
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /f /t REG_BINARY /v OneDrive /d 0300000021B9DEB396D7D001
+
+# No OneDrive for newuser
+reg load "hku\Default" "C:\Users\Default\NTUSER.DAT"
+reg delete "HKEY_USERS\Default\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OneDriveSetup" /f
+reg unload "hku\Default
+
 # Remove 'Onedrive folder' from left side of file explorer
 reg Add "HKLM\Software\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /T REG_DWORD /V "System.IsPinnedToNameSpaceTree" /D 0 /F
+
+
 
 # Clean up random onedrive stuff
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:localappdata\Microsoft\OneDrive"
