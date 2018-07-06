@@ -6,6 +6,7 @@
 # July 4 2018 
 # Terminate any OneDrive processes
     CMD /C "C:\Windows\System32\taskkill.exe /f /im OneDrive.exe"
+    CMD /C "C:\Windows\System32\taskkill.exe /f /im explorer.exe"
 # Uninstall
     CMD /C "c:\Windows\SysWOW64\OneDriveSetup.exe /uninstall"
 # take ownership of the re-installer
@@ -31,3 +32,9 @@ Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:localappdata\Mic
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:programdata\Microsoft OneDrive"
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "C:\OneDriveTemp"
 Remove-Item -Force -ErrorAction SilentlyContinue "$env:userprofile\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk"
+
+# Do not let Windows fool you. 
+foreach ($item in (ls "$env:WinDir\WinSxS\*onedrive*")) {
+    Takeown-Folder $item.FullName
+    rm -Recurse -Force $item.FullName
+}
