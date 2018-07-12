@@ -1,3 +1,4 @@
+$log = "C:\PerfLogs\approve-reject_updates.log"
 $WSUSserver = Get-WsusServer -Name corellia -PortNumber 8530
 Write-Progress -Activity 'Getting unapproved needed updates...' -PercentComplete 0
 $updatesneeded = Get-WsusUpdate -UpdateServer $WSUSserver -Approval Unapproved -Status needed
