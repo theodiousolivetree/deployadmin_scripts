@@ -1,4 +1,11 @@
+# Note: Some inspiration was taken from here: https://gallery.technet.microsoft.com/scriptcenter/Approve-needed-WSUS-a4c7b855
+# Set Set-ExecutionPolicy unrestricted
+# Remove ALL OneDrive
+# By The Odious Olivetree
+# July 12 2018
 $log = "C:\PerfLogs\approve-reject_updates.log"
+Import-Module -Name UpdateServices
+Get-Command -Module UpdateServices
 $WSUSserver = Get-WsusServer -Name corellia -PortNumber 8530
 Write-Progress -Activity 'Getting unapproved needed updates...' -PercentComplete 0
 $updatesneeded = Get-WsusUpdate -UpdateServer $WSUSserver -Approval Unapproved -Status needed
@@ -22,3 +29,5 @@ foreach ($update in $updatesNOTneeded)
     $i++
 }
 Write-Host "Declined updates: $total" -ForegroundColor Yellow
+
+Invoke-WsusServerCleanup -CleanupObsoleteComputers -CleanupObsoleteUpdates -CleanupUnneededContentFiles -CompressUpdates -DeclineExpiredUpdates  -DeclineSupersededUpdates 
