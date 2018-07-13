@@ -17,7 +17,7 @@
 # Create (a fake .exe, 0 bytes in size)
     New-Item C:\Windows\SysWOW64\OneDriveSetup.exe -Force
 # Deny system write
-    CMD /C "icacls C:\Windows\SysWOW64\OneDriveSetup.exe /deny Everyone:W"
+    CMD /C "icacls C:\Windows\SysWOW64\OneDriveSetup.exe /deny "Tout le Monde":W"
 
 # Disable OneDrive
 # write-Host "***Disabling OneDrive...***"
