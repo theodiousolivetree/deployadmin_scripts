@@ -20,18 +20,20 @@ reg add "HKCU\Software\Microsoft\CurrentVersion\ContentDeliveryManager\SoftLandi
 reg add "HKCU\Software\Microsoft\CurrentVersion\ContentDeliveryManager\" /f /t REG_DWORD /v RotatingLockScreenEnable /d 0
 
 # Disable One Drive
+# Terminate any OneDrive processes
+    CMD /C "C:\Windows\System32\taskkill.exe /f /im OneDrive.exe"
+#   CMD /C "C:\Windows\System32\taskkill.exe /f /im explorer.exe"
 # Uninstall
     CMD /C "c:\Windows\SysWOW64\OneDriveSetup.exe /uninstall"
 # take ownership of the re-installer
     CMD /C "takeown.exe /F C:\windows\SysWOW64\OneDriveSetup.exe /A"
-    CMD /C "icacls C:\windows\syswow64\OneDriveSetup.exe /grant Administrators:F"
+    CMD /C "icacls C:\windows\syswow64\OneDriveSetup.exe /grant Administrateurs:F"
 # Remove
     Remove-Item C:\Windows\SysWOW64\OneDriveSetup.exe -Force
 # Create (a fake .exe, 0 bytes in size)
     New-Item C:\Windows\SysWOW64\OneDriveSetup.exe -Force
 # Deny system write
-    CMD /C "icacls C:\Windows\SysWOW64\OneDriveSetup.exe /deny Everyone:W"
-
+    CMD /C "icacls C:\Windows\SysWOW64\OneDriveSetup.exe /deny "Tout le Monde":W"
 
 write-Host "***Disabling OneDrive...***"
 reg add "HKLM\Software\Policies\Microsoft\Windows\OneDrive" /f /t REG_DWORD /v DisableFileSyncNGSC /d 1
@@ -45,10 +47,6 @@ Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:localappdata\Mic
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:programdata\Microsoft OneDrive"
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "C:\OneDriveTemp"
 Remove-Item -Force -ErrorAction SilentlyContinue "$env:userprofile\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk"
-
-
-
-
 
 # Disable telemetry
 write-Host "***Disabling telemetry...***"
