@@ -2,5 +2,12 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Wsus_Package_Publisher" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deployadmin_scripts" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/glazier" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/google" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/google-apputils" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/python/python_scripts" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/python_scripts" vcs="Git" />
   </component>
 </project>
