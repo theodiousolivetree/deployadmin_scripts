@@ -14,18 +14,22 @@
 # Define Variables #
 # $ErrorAction = 'silentlycontinue'
 $ErrorActionPreference = 'silentlycontinue'
-$datetoday = 0
+$datetoday = Get-Date -UFormat "%Y-%m-%d"
+$regPath = "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore"
+$regkeypoint = "SystemRestorePointFrequency"
+$regkeyinterval = "RPSessionInterval"
+$regkeyvalue = "0"
 # Before everything making point recovery
 Enable-ComputerRestore -Drive "C:"
 # Set-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore -Name RPSessionInterval -Value 0 
-Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name 'RPSessionInterval' -Value '0'
-$datetoday = Get-Date -UFormat "%Y-%m-%d"
+# Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name 'RPSessionInterval' -Value '0'
+Set-ItemProperty -Path $regPath -Name $regkeyinterval -Value $regkeyvalue
+New-ItemProperty -Path $regPath -Name $regkeypoint -Value $regkeyvalue
+# CMD /C reg add HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore /v RPSessionInterval /t REG_WORD /d 0
+# CMD /C reg add HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore /v SystemRestorePointFrequency /t REG_WORD /d 0
 Checkpoint-Computer -Description $datetoday -RestorePointType MODIFY_SETTINGS
-# first run as test:
-# Set-variable -name skypebloat$ -Value (get-appxpackage *skype* | select packagefullname)
-# remove-appxprovisionedpackage -online -packagename skypebloat$
-# Remove-AppxPackage -allusers -Package "testzune"
-# end of first run as test
+# Checkpoint-Computer -Description $datetoday -RestorePointType MODIFY_SETTINGS 
+
 Set-ExecutionPolicy Unrestricted -Force Get-ExecutionPolicy
 Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy Unrestricted -Force
 # Set-ExecutionPolicy -Scope MachinePolicy -ExecutionPolicy Unrestricted -Force 
@@ -102,7 +106,8 @@ get-appxpackage -allusers *people* | remove-appxpackage
 
 # To uninstall Phone, Phone Companion :
 get-appxpackage -allusers *commsphone* | remove-appxpackage 
-get-appxpackage -allusers *windowsphone* | remove-appxpackage
+get-appxpackage -allusers *windowsphone* | remove-appxpackage 
+Get-AppxPackage -AllUsers *yourphone* | Remove-AppxPackage
 # To uninstall Phone and Phone Companion apps together:
 # get-appxpackage -allusers *phone* | remove-appxpackage
 
