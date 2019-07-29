@@ -6,7 +6,7 @@ PROCESS #This is where the script executes
     If ($pathexist -eq $false) 
     {New-Item -type directory -Path $path} 
     
-    $ADServer = "apcad2.apc.in2p3.fr"
+    $ADServer = "dc.my.domain.name"
 
     $SearchLoc ="CN=users,Dc=my,Dc=domaine,DC=name"
      
