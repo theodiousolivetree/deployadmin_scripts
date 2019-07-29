@@ -1,0 +1,66 @@
+PROCESS #This is where the script executes 
+{ 
+    # $path = Split-Path -parent "$CSVReportPath\*.*" 
+    $path = "C:\export"
+    $pathexist = Test-Path -Path $path 
+    If ($pathexist -eq $false) 
+    {New-Item -type directory -Path $path} 
+    
+    $ADServer = "apcad2.apc.in2p3.fr"
+
+    $SearchLoc ="CN=users,Dc=my,Dc=domaine,DC=name"
+     
+    $reportdate = Get-Date -Format ssddmmyyyy 
+ 
+    $csvreportfile = $path + "\ALLADUsers_$reportdate.csv" 
+     
+    #import the ActiveDirectory Module 
+    Import-Module ActiveDirectory 
+     
+    #Perform AD search. The quotes "" used in $SearchLoc is essential 
+    #Without it, Export-ADUsers returuned error 
+                  Get-ADUser -server $ADServer -searchbase "$SearchLoc" -Properties * -Filter * |  
+                  Select-Object @{Label = "First Name";Expression = {$_.GivenName}},  
+                  @{Label = "Last Name";Expression = {$_.Surname}}, 
+                  @{Label = "Display Name";Expression = {$_.DisplayName}}, 
+                  @{Label = "Logon Name";Expression = {$_.sAMAccountName}},
+                  @{Label = "cn";Expression = {_.cn}},  
+                  @{Label = "codePage";Expression = {_.codepage}}, 
+                  @{Label = "Full address";Expression = {$_.StreetAddress}}, 
+                  @{Label = "City";Expression = {$_.City}}, 
+                  @{Label = "State";Expression = {$_.st}}, 
+                  @{Label = "Post Code";Expression = {$_.PostalCode}}, 
+                  @{Label = "Country/Region";Expression = {if (($_.Country -eq 'GB')  ) {'United Kingdom'} Else {''}}}, 
+                  @{Label = "Job Title";Expression = {$_.Title}}, 
+                  @{Label = "Company";Expression = {$_.Company}}, 
+                  @{Label = "Description";Expression = {$_.Description}}, 
+                  @{Label = "Department";Expression = {$_.Department}}, 
+                  @{Label = "distinguishedName";Expression = {$_.DistinguishedName}},
+                  @{Label = "gecos";Expression = {$_.gecos}},
+                  @{Label = "gidNumber";Expression = {$_.gidNumber}},
+                  @{Label = "name";Expression = {$_.name}},
+                  @{Label = "Office";Expression = {$_.OfficeName}}, 
+                  @{Label = "objectCategory";Expression = {$_.objectCategory}},
+                  @{Label = "objectClass";Expression = {$_.objectClass}},
+                  @{Label = "objectGUID";Expression = {$_.objectGUID}},
+                  @{Label = "objectSid";Expression = {$_.objectSid}},
+                  @{Label = "Phone";Expression = {$_.telephoneNumber}}, 
+                  @{Label = "primaryGroupID";Expression = {$_.primaryGroupID}},
+                  @{Label = "replPropertyMetaData";Expression = {$_.replPropertyMetaData}},
+                  @{Label = "sAMAccountName";Expression = {$_.sAMAccountName}},
+                  @{Label = "sAMAccountType";Expression = {$_.sAMAccountType}},
+                  @{Label = "uid";Expression = {$_.uid}},
+                  @{Label = "uidNumber";Expression = {$_.uidNumber}},
+                  @{Label = "userAccountControl";Expression = {$_.userAccountControl}},
+                  @{Label = "uSNChanged";Expression = {$_.uSNChanged}},
+                  @{Label = "uSNCreated";Expression = {$_.uSNCreated}},
+                  @{Label = "whenChanged";Expression = {$_.whenChanged}},
+                  @{Label = "whenCreated";Expression = {$_.whenCreated}},
+                  @{Label = "Email";Expression = {$_.Mail}}, 
+                  @{Label = "Manager";Expression = {%{(Get-AdUser $_.Manager -server $ADServer -Properties DisplayName).DisplayName}}}, 
+                  @{Label = "Account Status";Expression = {if (($_.Enabled -eq 'TRUE')  ) {'Enabled'} Else {'Disabled'}}}, # the 'if statement# replaces $_.Enabled 
+                  @{Label = "Last LogOn Date";Expression = {$_.lastlogondate}} |  
+                   
+                  #Export CSV report 
+                  Export-Csv -Path $csvreportfile -NoTypeInformation     
+}
